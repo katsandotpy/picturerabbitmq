@@ -1,31 +1,25 @@
-version: "3"
+version: '3.8'
+
 services:
-  rabbit_mq:
-    image: rabbitmq:3.10.7-management
-    container_name: rabbit_mq
-    hostname: rabbitmq
-    restart: always
+  rabbitmq:
+    image: rabbitmq:3-management
     ports:
-      - '15672:15672'
-    volumes:
-      - ./rabbit_mq_data:/usr/share/rabbitmq/data
-      
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+
   producer:
-    build: ./producer
+    build: 
+      context: ./producer
     depends_on:
-      - rabbit_mq
-    volumes:
-      - ./producer:/usr/src/app/producer
-      
-  
+      - rabbitmq
+
   consumer:
-    build: ./consumer
+    build:
+      context: ./consumer
+    ports:
+      - "80:80"
     depends_on:
-      - rabbit_mq
-    volumes:
-      - ./consumer:/usr/src/app/consumer
-      
-         
-volumes:
-  rabbit_mq_data:
-    driver: local
+      - rabbitmq
