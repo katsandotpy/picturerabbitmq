@@ -14,7 +14,7 @@ def image_to_base64(file_path):
     return encoded_string
 
 
-file_path = r"cat.jpg" 
+file_path = r"/usr/src/app/producer/cat.jpg"
 base64_string = image_to_base64(file_path)
 print(base64_string[:100] + "...") 
 
